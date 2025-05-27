@@ -1,0 +1,50 @@
+rules:
+  validators:
+    dochub.web-architecture.naming:
+      title: "Правила именования компонентов"
+      description: "Идентификаторы компонентов должны быть осмысленными, многоуровневыми, отражать структуру приложения и использовать английские символы."
+      source: |
+        $keys($) ~> $map(function($v, $k) {
+          $k ~> /^(frontend|backend|api|db)(\.[a-zA-Z0-9_-]+)*$/
+        })
+    dochub.web-architecture.modularity:
+      title: "Правила модульности"
+      description: "Архитектурные компоненты должны быть разделены по функциональным модулям, обеспечивая слабую связанность и высокую связанность внутри модуля."
+      source: |
+        $count(components) > 0
+    dochub.web-architecture.documentation:
+      title: "Документирование"
+      description: "Каждый компонент должен иметь описание и метаданные, обеспечивающие автоматическую генерацию документации и диаграмм."
+      source: |
+        $exists(components.*.title) and $exists(components.*.entity)
+    dochub.web-architecture.versioning:
+      title: "Версионирование"
+      description: "Версии компонентов и пакетов должны строго контролироваться в формате x.x.x, обеспечивая совместимость и управляемость изменений."
+      source: |
+        $matches($package.*.version, "^[0-9]+\.[0-9]+\.[0-9]+$")
+    dochub.web-architecture.imports:
+      title: "Управление импортами"
+      description: "Используйте импорт базовой метамодели CEAF и других необходимых пакетов для обеспечения совместимости и расширяемости."
+      source: |
+        imports ~> $contains("github:DocHubTeam/ceaf-app:master@dochub.yaml")
+    dochub.web-architecture.architecture-as-code:
+      title: "Архитектура как код"
+      description: "Все архитектурные описания, контексты, аспекты и компоненты должны быть описаны в YAML с использованием метамодели DocHub, обеспечивая автоматическую проверку и генерацию."
+      source: |
+        $exists(components) and $exists(contexts) and $exists(aspects)
+
+  exceptions: {}
+
+components:
+  frontend:
+    title: "Frontend"
+    entity: "component"
+  backend:
+    title: "Backend"
+    entity: "component"
+  api:
+    title: "API Gateway"
+    entity: "component"
+  database:
+    title: "Database"
+    entity: "component"

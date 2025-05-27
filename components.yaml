@@ -1,0 +1,54 @@
+components:
+  frontend:
+    title: "Frontend"
+    entity: "component"
+    description: "Компонент пользовательского интерфейса, взаимодействующий с backend."
+    aspects:
+      - dochub.web-architecture.modularity
+      - dochub.web-architecture.documentation
+    links:
+      - id: backend
+        direction: "-->"
+        title: "Взаимодействие с backend"
+  backend:
+    title: "Backend"
+    entity: "component"
+    description: "Серверный компонент, реализующий бизнес-логику и API для frontend и admin_panel."
+    aspects:
+      - dochub.web-architecture.modularity
+      - dochub.web-architecture.documentation
+    links:
+      - id: auth_service
+        direction: "-->"
+        title: "Запросы авторизации"
+      - id: logging_service
+        direction: "-->"
+        title: "Отправка логов"
+      - id: admin_panel
+        direction: "<--"
+        title: "Управление через админку"
+  auth_service:
+    title: "Authorization Service"
+    entity: "component"
+    description: "Сервис авторизации, обеспечивающий аутентификацию и управление доступом."
+    aspects:
+      - dochub.web-architecture.modularity
+      - dochub.web-architecture.documentation
+  logging_service:
+    title: "Logging Service"
+    entity: "component"
+    description: "Сервис сбора и хранения логов, интегрированный с backend."
+    aspects:
+      - dochub.web-architecture.modularity
+      - dochub.web-architecture.documentation
+  admin_panel:
+    title: "Admin Panel"
+    entity: "component"
+    description: "Интерфейс управления системой, взаимодействующий с backend."
+    aspects:
+      - dochub.web-architecture.modularity
+      - dochub.web-architecture.documentation
+    links:
+      - id: backend
+        direction: "-->"
+        title: "Управление backend"

@@ -1,0 +1,13 @@
+aspects:
+  dochub:
+    title: Dochub
+    description: Докхаб
+  dochub.web-architecture:
+    title: Web-архитектура
+    description: "Аспект веб-архитектуры"
+  dochub.web-architecture.modularity:
+    title: "Модульность"
+    description: "Аспект, обеспечивающий разделение архитектурных компонентов на модули с высокой связанностью внутри и слабой связностью между модулями."
+  dochub.web-architecture.documentation:
+    title: "Документирование"
+    description: "Аспект, обеспечивающий наличие описания и метаданных для автоматической генерации документации и диаграмм."

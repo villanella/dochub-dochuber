@@ -1,0 +1,85 @@
+dochuber: 
+  contexts: 
+    global: 
+      dochub.docs: 
+        type: resource
+        description: Подключаем документацию DocHub
+        source: https://alpha.dochub.info/archcode/_metamodel_/dochub-manual/dochub.yaml
+      dochub.rules:
+        type: generator
+        source: docs.rules
+        
+  knowledge:
+    dochub.docs:
+      # Тип генератора - фабрика генераторов
+      type: generator
+      # Краткое общая информация о генераторе
+      description: Содержит полную документацию по DocHub
+      # Формируется массив генераторов для документов отобранных по шаблону идентификатора
+      source: >
+        (
+          /* Для удобства создана функция отбора документов по regex */
+          docs~>$dochuberFetchDocs("^dochub(\\..+)*$");
+        )
+
+functions:
+  dochuberFetchDocs:
+    title: Генерирует ресурсные ссылки на документы по указанному шаблону ID для Dochuber
+    # Декларируем требуемые параметры в формате массива JSONSchema
+    params:
+      - alias: docs
+        type: object
+        title: Коллекция документов
+      - alias: pattern
+        title: Шаблон отбора документов
+    # Декларируем схему данных результата успешного выполнения функции
+    result:
+      type: array
+      title: Массив ресурсных ссылок для Dochuber
+      items:
+        type: object
+        required: [ type, description, source ]
+        properties:
+          type:
+            title: Тип всегда равен "resource"
+            type: string
+            enum: [ resource ]
+          source:
+            title: Содержимое документа
+            type: [ string, object, array ]
+          title:
+            title: Название генератора
+            type: string
+          $base:
+            title: Путь в DataLake от которого разрешаются относительные пути
+            type: string
+          description:
+            title: Краткое описание знания
+            type: string
+    # Код функции на JSONata
+    code: >+
+      (
+        /* Выбираем нужные документы по шаблону */
+        $regexp := $eval("/" & pattern & "/");
+        [docs.$keys()[$match($, $regexp)].(
+          /* Получаем документ из Data Lake */
+          $doc := $lookup($$.docs, $);
+          /* Если названия документа нет, то берем его ID */
+          $title := $doc.title ? $doc.title : $;
+          /* Формируем ссылку на ресурс */
+          $doc.source 
+          /* Если ресурс определен - все в порядке */
+          ? { 
+            "type": "resource",
+            /* Если у документа нет описания, используем название */
+            "description": $doc.description ? $doc.description : $title,
+            "title":  $doc.title,
+            "$base": "/docs/" & $ & "/source",
+            "source": $doc.source
+          }
+          /* Иначе выводим в лог ошибку */
+          : $log("Can not inlude doc " & $ & " to knowledge! Not found source.", "error"); 
+        )]
+      )
+        
+    
