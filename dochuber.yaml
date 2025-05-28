@@ -7,7 +7,8 @@ dochuber:
         source: https://alpha.dochub.info/archcode/_metamodel_/dochub-manual/dochub.yaml
       dochub.rules:
         type: generator
-        source: docs.rules
+        description: Правила работы с архитектурным репозиторием
+        source: rules.md
         
   knowledge:
     dochub.docs:
@@ -82,4 +83,3 @@ functions:
         )]
       )
         
-    

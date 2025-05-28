@@ -1,0 +1,29 @@
+contexts:
+  frontend:
+    title: "Frontend Context"
+    description: "Контекст, включающий компонент пользовательского интерфейса frontend."
+    components:
+      - frontend.*
+  backend:
+    title: "Backend Context"
+    description: "Контекст, включающий серверный компонент backend и связанные с ним сервисы."
+    components:
+      - backend.*
+      - auth_service.*
+      - logging_service.*
+      - admin_panel.*
+  auth_service:
+    title: "Authorization Service Context"
+    description: "Контекст сервиса авторизации, обеспечивающего аутентификацию и управление доступом."
+    components:
+      - auth_service.*
+  logging_service:
+    title: "Logging Service Context"
+    description: "Контекст сервиса сбора и хранения логов."
+    components:
+      - logging_service.*
+  admin_panel:
+    title: "Admin Panel Context"
+    description: "Контекст интерфейса управления системой."
+    components:
+      - admin_panel.*
